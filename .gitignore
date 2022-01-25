@@ -1,0 +1,12 @@
+build
+captures/
+*.iml
+*.project
+*.buildship.core.prefs
+out
+.idea
+prebuilts
+.DS_Store
+local.properties
+.gradle
+ktlint
