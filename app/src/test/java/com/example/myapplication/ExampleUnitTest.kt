@@ -2,16 +2,18 @@ package com.example.myapplication
 
 import android.os.Looper
 import android.util.Log
+import androidx.lifecycle.asFlow
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import androidx.work.testing.WorkManagerTestInitHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
-import org.robolectric.RuntimeEnvironment
-import androidx.lifecycle.asFlow
-import kotlinx.coroutines.*
-
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows
 import java.util.concurrent.Executor
 
@@ -49,7 +51,7 @@ class ExampleUnitTest {
 //            Shadows.shadowOf(Looper.getMainLooper()).idle()
 //        }
 
-        GlobalScope.launch {
+        val job = GlobalScope.launch {
             workManager.getWorkInfoByIdLiveData(request.id).asFlow().collect { workInfo ->
                 println("info: $workInfo")
             }
@@ -59,7 +61,7 @@ class ExampleUnitTest {
 //            println("observe info: $workInfo")
 //        }
 
-        while (true) { // TODO Find a way to finish the test
+        while (job.isActive) {
             Shadows.shadowOf(Looper.getMainLooper()).idle()
         }
     }
