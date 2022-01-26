@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.asFlow
 import androidx.work.Configuration
 import androidx.work.WorkManager
+import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.WorkManagerTestInitHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -25,16 +26,8 @@ class ExampleUnitTest {
         val context = RuntimeEnvironment.getApplication().applicationContext
         val config = Configuration.Builder()
             .setMinimumLoggingLevel(Log.DEBUG)
-            .setExecutor {
-                GlobalScope.launch(Dispatchers.Default) {
-                    it.run()
-                }
-            }
-            .setTaskExecutor(Executor {
-                GlobalScope.launch(Dispatchers.Default) {
-                    it.run()
-                }
-            })
+            .setExecutor(SynchronousExecutor())
+            .setTaskExecutor(SynchronousExecutor())
             .build()
 
         WorkManagerTestInitHelper.initializeTestWorkManager(context, config)

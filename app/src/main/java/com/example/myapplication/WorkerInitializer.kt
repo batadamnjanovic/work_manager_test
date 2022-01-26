@@ -19,6 +19,8 @@ class WorkerInitializer : Initializer<WorkManager> {
     }
 
     override fun create(context: Context): WorkManager {
+        // TODO Crash is happening here. Tried also with https://dagger.dev/hilt/early-entry-point
+        // TODO but unsuccessful
         EntryPointAccessors.fromApplication<WorkManagerInitializerEntryPoint>(context)
 
         val configuration = Configuration.Builder()
