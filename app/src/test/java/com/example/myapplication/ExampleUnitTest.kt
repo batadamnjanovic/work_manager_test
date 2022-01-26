@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -37,18 +38,18 @@ class ExampleUnitTest {
         val request = UploadWorker.createWorkerRequest()
         workManager.enqueue(request)
 
-//        var a = 0
-//        while (a++ < 50) {
-//            val workInfo = workManager.getWorkInfoById(request.id).await()
-//            println("work info: $workInfo")
-//            Shadows.shadowOf(Looper.getMainLooper()).idle()
-//        }
-
         val job = GlobalScope.launch {
             workManager.getWorkInfoByIdLiveData(request.id).asFlow().collect { workInfo ->
                 println("info: $workInfo")
             }
         }
+
+        //        var a = 0
+//        while (a++ < 50) {
+//            val workInfo = workManager.getWorkInfoById(request.id).await()
+//            println("work info: $workInfo")
+//            Shadows.shadowOf(Looper.getMainLooper()).idle()
+//        }
 
 //        workManager.getWorkInfoByIdLiveData(request.id).observeForever { workInfo ->
 //            println("observe info: $workInfo")

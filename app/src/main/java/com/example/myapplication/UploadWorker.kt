@@ -18,10 +18,12 @@ internal class UploadWorker(
     }
 
     override suspend fun doWork(): Result {
-        var a = 0
-        while (a++ < 50) {
-            yield()
-        }
+        delay(1000) // TODO With delay it does not work
+
+//        var a = 0
+//        while (a++ < 100000) {
+//            yield()
+//        }
         return Result.success(workDataOf("test" to 2))
     }
 }
